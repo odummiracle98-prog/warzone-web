@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>WARZONE - Urban Warfare | MexicoMingle Premium</title>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Inter:wght@400;700;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#05070a;color:#fff;font-family:'Inter',sans-serif}
+nav{display:flex;justify-content:space-between;align-items:center;padding:16px 30px;background:rgba(5,7,10,0.9);position:fixed;width:100%;z-index:99;border-bottom:1px solid #1a1f2a}
+.logo{font-family:'Black Ops One';font-size:28px;letter-spacing:1px}
+.logo b{color:#ffb700}
+.hero{min-height:100vh;background:linear-gradient(90deg,#05070a 0%,#05070a 45%,rgba(5,7,10,0.2) 100%),url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2071') center/cover;display:flex;align-items:center;padding:100px 40px 40px}
+.content{max-width:600px}
+.badge{background:#2a2d24;border:1px solid #3a3d2f;padding:6px 14px;font-size:10px;letter-spacing:2px;color:#9ca3af;display:inline-block;margin-bottom:16px}
+h1{font-family:'Black Ops One';font-size:84px;line-height:0.9;text-transform:uppercase}
+h1 span{color:#e5e7eb;-webkit-text-stroke:1px #fff}
+h1 .yellow{color:#ffb700;-webkit-text-stroke:0}
+.sub{color:#9ca3af;margin:16px 0 28px;font-size:14px;letter-spacing:1px}
+.actions{display:flex;gap:14px;flex-wrap:wrap}
+.btn{padding:16px 32px;font-weight:900;letter-spacing:1px;cursor:pointer;border:none;clip-path:polygon(6% 0,100% 0,94% 100%,0 100%)}
+.btn-play{background:#ffb700;color:#000;font-size:16px}
+.btn-trailer{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#fff;backdrop-filter:blur(10px)}
+.login-box{margin-top:30px;background:rgba(17,19,24,0.9);border:1px solid #222a36;border-radius:16px;padding:20px;max-width:380px}
+.login-box h3{font-size:14px;margin-bottom:12px;letter-spacing:2px;color:#9ca3af}
+input{width:100%;padding:13px;border-radius:10px;border:none;background:#0f1218;color:#fff;margin-bottom:10px;font-size:15px;border:1px solid #1f2937}
+#msg{font-size:12px;color:#fb7185;margin-top:8px}
+#ok{font-size:12px;color:#4ade80;margin-top:8px;display:none}
+@media(max-width:600px){h1{font-size:54px}.hero{padding:90px 20px 20px}}
+</style>
+</head>
+<body>
+<nav><div class="logo">WARZONE <b>WEB</b></div><div style="font-size:11px;letter-spacing:3px;color:#6b7280">BETA • ODUMMIRACLE98</div></nav>
+
+<div class="hero">
+<div class="content">
+<div class="badge">SEASON 06 • GHOST PROTOCOL • MEXICOMINGLE PREMIUM</div>
+<h1>URBAN<br><span>WARFARE</span><br><span class="yellow">ONLINE</span></h1>
+<p class="sub">Free-to-Play • Modern Warfare FPS • Earn $10/mo & $100/yr as Premium</p>
+<div class="actions">
+<button class="btn btn-play" onclick="enterGame()">PLAY NOW →</button>
+<button class="btn btn-trailer" onclick="location.href='#login'">WATCH TRAILER</button>
+</div>
+
+<div class="login-box" id="login">
+<h3>LOGIN / SIGN UP - NO NETWORK ERROR</h3>
+<input id="email" type="email" placeholder="Email - odummiracle98@gmail.com" value="odummiracle98@gmail.com">
+<input id="pass" type="password" placeholder="Password 6+ chars">
+<button class="btn btn-play" style="width:100%" onclick="login()">CONTINUE</button>
+<div id="msg"></div><div id="ok"></div>
+</div>
+</div>
+</div>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCJcLBkibFTJCHsKLhnHOa2BG8OC6kAr1Q",
+  authDomain: "mexicomingle-7a28a.firebaseapp.com",
+  projectId: "mexicomingle-7a28a",
+  storageBucket: "mexicomingle-7a28a.firebasestorage.app",
+  messagingSenderId: "1075679328340",
+  appId: "1:1075679328340:web:a55d929f8a076b62e555c1"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+
+async function login(){
+ const e=document.getElementById('email').value.trim();
+ const p=document.getElementById('pass').value;
+ const m=document.getElementById('msg'); const o=document.getElementById('ok');
+ m.textContent=''; o.style.display='none';
+ if(!e||!p){m.textContent='Enter email & password';return;}
+ m.textContent='Connecting...';
+ try{
+   try{await auth.signInWithEmailAndPassword(e,p);}
+   catch(err){
+     if(err.code==='auth/user-not-found'||err.code==='auth/invalid-credential'||err.code==='auth/invalid-login-credentials'){
+       await auth.createUserWithEmailAndPassword(e,p);
+     }else throw err;
+   }
+   m.textContent='';
+   o.style.display='block';
+   o.textContent='✅ SUCCESS - Logged in as '+auth.currentUser.email;
+ }catch(err){m.textContent=err.message; console.error(err);}
+}
+function enterGame(){
+ const c = document.createElement('canvas'); c.style.position='fixed';c.style.top='0';c.style.left='0';c.style.width='100%';c.style.height='100%';c.style.zIndex='1000';document.body.appendChild(c);
+ c.innerHTML='GAME LOADING...'; alert('FPS Engine starting - Next step: I will add Three.js shooter to this canvas!');
+}
+</script>
+</body>
+                                                                  </html>
